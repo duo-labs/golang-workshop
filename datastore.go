@@ -65,7 +65,15 @@ func (store *MapStore) GetURL(shortcode string) (*URLEntry, error) {
 
 // ListURLs returns a list of all URLEntry items in the datastore
 func (store *MapStore) ListURLs() ([]*URLEntry, error) {
+	entries := []*URLEntry{}
 	// TODO 1: return a list of all URLEntrys in the MapStore
+	//
+	// HINT: To iterate over maps (and channels!) Go has a special keyword
+	// called "range". You can use it in for loops, as shown here:
+	// TODO: https://blog.golang.org/go-maps-in-action
+	//
+	// HINT: To append an entry to an array (actually a "slice" in Go terms)
+	// you can use the "append" function.
 	return []*URLEntry{}, errors.New("not implemented")
 }
 
