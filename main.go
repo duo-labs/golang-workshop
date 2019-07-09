@@ -45,6 +45,12 @@ func ShowURL(w http.ResponseWriter, r *http.Request) {
 // the user.
 func RedirectHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO 1: Parse the request and save the shortcode
+	//
+	// HINT: The URL requested is in r.URL. More information can be found here:
+	// https://golang.org/pkg/net/url/#URL
+	//
+	// HINT: You can use the `strings` package to split a string:
+	// https://golang.org/pkg/strings/
 
 	// Assuming it's a "valid" shortcode, we need to make sure it exists
 	//
