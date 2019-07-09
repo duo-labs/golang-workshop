@@ -47,7 +47,10 @@ func TestValidRedirect(t *testing.T) {
 	expectedURL := "http://example.com"
 
 	// Manually add a shortcode -> URL mapping
-	urls[expectedShortcode] = expectedURL
+	store.AddURL(&URLEntry{
+		Shortcode: expectedShortcode,
+		URL:       expectedURL,
+	})
 
 	r := httptest.NewRequest(http.MethodGet, fmt.Sprintf("/%s", expectedShortcode), nil)
 	w := httptest.NewRecorder()

@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-var urls = make(map[string]string)
+var store = NewMapStore()
 
 // AddURL adds a URL to the underlying store (in our case, a simple map)
 func AddURL(w http.ResponseWriter, r *http.Request) {
@@ -33,7 +33,10 @@ func AddURL(w http.ResponseWriter, r *http.Request) {
 	// Note: In production you wouldn't want to access a map like this, since
 	// writing to a map isn't concurrency-safe. But for our workshop, it will be
 	// fine.
-	urls[shortcode] = url
+	store.AddURL(&URLEntry{
+		Shortcode: shortcode,
+		URL:       url,
+	})
 	w.Write([]byte("ok"))
 }
 
@@ -41,6 +44,11 @@ func AddURL(w http.ResponseWriter, r *http.Request) {
 func ShowURL(w http.ResponseWriter, r *http.Request) {
 	// Display URLs in the "urls" map
 	// HINT: make requests to /list to see your map when debugging
+	urls, err := store.ListURLs()
+	if err != nil {
+		http.Error(w, "Internal Server Error", 500)
+		return
+	}
 	jsonString, _ := json.Marshal(urls)
 	w.Write(jsonString)
 }
@@ -59,14 +67,20 @@ func RedirectHandler(w http.ResponseWriter, r *http.Request) {
 	//
 	// HINT: Accessing a map returns 2 variables, one for the value if it
 	// exists and one for a boolean if it was found.
-	url, ok := urls[shortcode]
-	if !ok {
+	entry, err := store.GetURL(shortcode)
+	if err != nil {
 		http.Error(w, "Not found", 404)
 		return
 	}
 
+	_, err = store.HitURL(shortcode)
+	if err != nil {
+		http.Error(w, "Internal Server Error", 500)
+		return
+	}
+
 	// TODO 3: Return a 302 redirect to the correct URL
-	http.Redirect(w, r, url, 302)
+	http.Redirect(w, r, entry.URL, 302)
 }
 
 func main() {
