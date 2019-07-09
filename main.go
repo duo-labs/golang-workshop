@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 )
 
 var urls = make(map[string]string)
@@ -23,6 +24,9 @@ func AddURL(w http.ResponseWriter, r *http.Request) {
 	shortcode := r.Form.Get("shortcode")
 	// TODO 1. Blacklist short urls "add" and "list", since they are routes in our app.
 	// Return a 400 and a useful error message.
+	if shortcode == "add" || shortcode == "list" {
+		http.Error(w, "The shortcode provided is a reserved word", 400)
+	}
 
 	// Now we can register the variables to our map, essentially "saving" the URL
 	//
@@ -45,6 +49,8 @@ func ShowURL(w http.ResponseWriter, r *http.Request) {
 // the user.
 func RedirectHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO 1: Parse the request and save the shortcode
+	parts := strings.Split(r.URL.Path, "/")
+	shortcode := parts[1]
 
 	// Assuming it's a "valid" shortcode, we need to make sure it exists
 	//
@@ -53,8 +59,14 @@ func RedirectHandler(w http.ResponseWriter, r *http.Request) {
 	//
 	// HINT: Accessing a map returns 2 variables, one for the value if it
 	// exists and one for a boolean if it was found.
+	url, ok := urls[shortcode]
+	if !ok {
+		http.Error(w, "Not found", 404)
+		return
+	}
 
 	// TODO 3: Return a 302 redirect to the correct URL
+	http.Redirect(w, r, url, 302)
 }
 
 func main() {
