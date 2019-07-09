@@ -66,12 +66,21 @@ func (store *MapStore) GetURL(shortcode string) (*URLEntry, error) {
 // ListURLs returns a list of all URLEntry items in the datastore
 func (store *MapStore) ListURLs() ([]*URLEntry, error) {
 	// TODO 1: return a list of all URLEntrys in the MapStore
-	return []*URLEntry{}, errors.New("not implemented")
+	entries := []*URLEntry{}
+	for _, entry := range store.urls {
+		entries = append(entries, entry)
+	}
+	return entries, nil
 }
 
 // HitURL increments the number of hits for a given shortcode
 func (store *MapStore) HitURL(shortcode string) (*URLEntry, error) {
 	// TODO 2: Get the URLEntry from the shortcode provided, increment its Hits
 	// property, and then return the URLEntry
-	return &URLEntry{}, errors.New("not implemented")
+	entry, ok := store.urls[shortcode]
+	if !ok {
+		return entry, errors.New("url doesn't exist")
+	}
+	entry.Hits++
+	return entry, nil
 }
