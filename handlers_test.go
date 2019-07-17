@@ -25,7 +25,7 @@ func TestRestrictedShortcodes(t *testing.T) {
 
 		// Verify that we got an HTTP 400 response, since these shouldn't be allowed!
 		if w.Code != http.StatusBadRequest {
-			t.Fatalf("unexpected status code received. expected %d got %d", http.StatusBadRequest, w.Code)
+			t.Fatalf("unexpected status code received when requesting the blacklist entry \"%s\". expected %d got %d", shortcode, http.StatusBadRequest, w.Code)
 		}
 	}
 }
@@ -38,7 +38,7 @@ func TestNonExistentRedirect(t *testing.T) {
 	RedirectHandler(w, r)
 
 	if w.Code != http.StatusNotFound {
-		t.Fatalf("unexpected status code received. expected %d got %d", http.StatusNotFound, w.Code)
+		t.Fatalf("unexpected status code received when requesting a shortcode that shouldn't exist. expected %d got %d", http.StatusNotFound, w.Code)
 	}
 }
 
@@ -56,7 +56,7 @@ func TestValidRedirect(t *testing.T) {
 	RedirectHandler(w, r)
 
 	if w.Code != http.StatusFound {
-		t.Fatalf("unexpected status code received. expected %d got %d", http.StatusFound, w.Code)
+		t.Fatalf("unexpected redirect status code received when requesting a shortcode that should exist. expected %d got %d", http.StatusFound, w.Code)
 	}
 
 	got := w.Header().Get("Location")

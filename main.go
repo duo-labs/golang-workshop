@@ -23,6 +23,7 @@ func AddURL(w http.ResponseWriter, r *http.Request) {
 	shortcode := r.Form.Get("shortcode")
 	// TODO 1. Blacklist short urls "add" and "list", since they are routes in our app.
 	// Return a 400 and a useful error message.
+	// HINT: See the code above showing how to return an HTTP error
 
 	// Now we can register the variables to our map, essentially "saving" the URL
 	//
@@ -36,7 +37,7 @@ func AddURL(w http.ResponseWriter, r *http.Request) {
 // ShowURL returns a JSON encoding of all the registered URLs and shortcodes.
 func ShowURL(w http.ResponseWriter, r *http.Request) {
 	// Display URLs in the "urls" map
-	// HINT: make requests to /list to see your map when debugging
+	// HINT: You can make requests to /list to see your map when debugging
 	jsonString, _ := json.Marshal(urls)
 	w.Write(jsonString)
 }
@@ -46,7 +47,9 @@ func ShowURL(w http.ResponseWriter, r *http.Request) {
 func RedirectHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO 1: Parse the request and save the shortcode
 	//
-	// HINT: The URL requested is in r.URL. More information can be found here:
+	// We expect the shortcode to be in the form /shortcode
+	//
+	// HINT: The path requested is in r.URL.Path More information can be found here:
 	// https://golang.org/pkg/net/url/#URL
 	//
 	// HINT: You can use the `strings` package to split a string:
@@ -57,10 +60,13 @@ func RedirectHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO 2: Verify that the shortcode is in our map. If it's not,
 	// return a 404 Not Found error message.
 	//
-	// HINT: Accessing a map returns 2 variables, one for the value if it
-	// exists and one for a boolean if it was found.
+	// HINT: Accessing our map can return 2 variables, one for the URL if it
+	// exists and one for a boolean if it was found. An example can be found
+	// here: https://stackoverflow.com/a/2050629
 
 	// TODO 3: Return a 302 redirect to the correct URL
+	// HINT: The `net/http` package has useful functions which may help with
+	// `Redirect`ing the request. You can find them here https://golang.org/pkg/net/http/#pkg-index
 }
 
 func main() {
