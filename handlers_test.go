@@ -59,7 +59,7 @@ func TestValidRedirect(t *testing.T) {
 	RedirectHandler(w, r)
 
 	if w.Code != http.StatusFound {
-		t.Fatalf("unexpected status code received. expected %d got %d", http.StatusFound, w.Code)
+		t.Fatalf("unexpected status code received. expected %d got %d with response: %s", http.StatusFound, w.Code, w.Body.String())
 	}
 
 	got := w.Header().Get("Location")

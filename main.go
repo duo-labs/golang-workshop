@@ -75,7 +75,7 @@ func RedirectHandler(w http.ResponseWriter, r *http.Request) {
 
 	_, err = store.HitURL(shortcode)
 	if err != nil {
-		http.Error(w, "Internal Server Error", 500)
+		http.Error(w, err.Error(), 500)
 		return
 	}
 

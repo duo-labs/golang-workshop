@@ -2,6 +2,9 @@ package main
 
 import "errors"
 
+// URLEntry represents a mapping between a shortcode and its URL.
+// To support analytics, we've also introduced a `Hits` attribute that is
+// expected to increment every time a user requests a certain shortcode.
 type URLEntry struct {
 	Shortcode string
 	URL       string
@@ -68,18 +71,25 @@ func (store *MapStore) ListURLs() ([]*URLEntry, error) {
 	entries := []*URLEntry{}
 	// TODO 1: return a list of all URLEntrys in the MapStore
 	//
-	// HINT: To iterate over maps (and channels!) Go has a special keyword
-	// called "range". You can use it in for loops, as shown here:
-	// TODO: https://blog.golang.org/go-maps-in-action
+	// HINT: To iterate over maps (and channels!) with a for loop, Go has a
+	// special keyword called "range". You can use it in for loops, as shown
+	// here: https://blog.golang.org/go-maps-in-action#TOC_3.
 	//
-	// HINT: To append an entry to an array (actually a "slice" in Go terms)
-	// you can use the "append" function.
-	return []*URLEntry{}, errors.New("not implemented")
+	// HINT: To append a URLEntry to an array (actually a "slice" in Go terms)
+	// you can use the "append" function like this:
+	// entries = append(entries, some_url_entry)
+
+	// Finally, you'll want to change this call to errors.New to be "nil" when
+	// you've implemented the function.
+	return entries, errors.New("not implemented")
 }
 
 // HitURL increments the number of hits for a given shortcode
 func (store *MapStore) HitURL(shortcode string) (*URLEntry, error) {
 	// TODO 2: Get the URLEntry from the shortcode provided, increment its Hits
 	// property, and then return the URLEntry
+	//
+	// HINT: You can use the store.GetURL function from above to handle getting
+	// the right URLEntry for you.
 	return &URLEntry{}, errors.New("not implemented")
 }
